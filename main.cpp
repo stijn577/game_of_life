@@ -1,5 +1,5 @@
-#include "./hpp/board.hpp"
-#include "./hpp/square.hpp"
+#include "./lib/board.hpp"
+#include "./lib/square.hpp"
 
 int main(int argc, char *argv[]) {
   Board board = Board();
@@ -9,8 +9,16 @@ int main(int argc, char *argv[]) {
   board.set_square_black(1, 5);
 
   std::cout << board << std::endl;
-
   board.naive_update();
+  std::cout << board << std::endl;
+  board.naive_update();
+  std::cout << board << std::endl;
+  board.naive_update();
+  std::cout << board << std::endl;
+  board.naive_update();
+  std::cout << board << std::endl;
+  board.naive_update();
+
 
   std::cout << board << std::endl;
 }
