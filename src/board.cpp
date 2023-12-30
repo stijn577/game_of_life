@@ -1,10 +1,12 @@
 #include "../lib/board.hpp"
 #include "../lib/square.hpp"
 
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
 #include <string>
+#include <thread>
 #include <vector>
 
 Board::Board() {
@@ -16,6 +18,12 @@ Board::Board() {
 }
 
 std::ostream &operator<<(std::ostream &out, const Board &board) {
+#ifdef _WIN32
+  system("cls");
+#else
+  system("clear");
+#endif
+
   std::cout << " _";
   for (int i = 0; i < BOARD_SIZE; i++) {
     std::cout << " _";
@@ -35,7 +43,6 @@ std::ostream &operator<<(std::ostream &out, const Board &board) {
   for (int i = 0; i < BOARD_SIZE; i++) {
     std::cout << " _";
   }
-  std::cout << "\n";
 
   return out;
 }
@@ -67,8 +74,11 @@ void Board::naive_update() {
       }
     }
   }
-
+#ifdef _WIN32
   _sleep(200); // deprecated but the newer version doesn't seem to work
+#else
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+#endif
 
   this->set_board(new_board);
 }
