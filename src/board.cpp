@@ -1,11 +1,10 @@
 #include "../lib/board.hpp"
 #include "../lib/square.hpp"
 
-#include <chrono>
-#include <ctime>
+#include <fstream>
 #include <iostream>
 #include <stdio.h>
-#include <thread>
+#include <string>
 #include <vector>
 
 Board::Board() {
@@ -42,7 +41,7 @@ std::ostream &operator<<(std::ostream &out, const Board &board) {
 }
 
 void Board::naive_update() {
-  //   Board new_board = Board(*this);
+  // Initialise a new board with the board_size and set everything to black
   Square new_board[BOARD_SIZE][BOARD_SIZE] = {BLACK};
 
   for (int row = 0; row < BOARD_SIZE; row++) {
@@ -52,20 +51,24 @@ void Board::naive_update() {
       if (this->board[row][col].get_color() == WHITE) {
         if (neighbors == 2 || neighbors == 3) {
           new_board[row][col] = WHITE;
-        } else {
-          new_board[row][col] = BLACK;
         }
+        // since we default the new_board to be a fully BLACK field, only
+        // BLACK->WHITE should be written else {
+        //   new_board[row][col] = BLACK;
+        // }
       } else {
         if (neighbors == 3) {
           new_board[row][col] = WHITE;
-        } else {
-          new_board[row][col] = BLACK;
         }
+        // since we default the new_board to be a fully BLACK field, only
+        // BLACK->WHITE should be written else {
+        //   new_board[row][col] = BLACK;
+        // }
       }
     }
   }
 
-  _sleep(500); // deprecated but im using older clang version
+  _sleep(200); // deprecated but the newer version doesn't seem to work
 
   this->set_board(new_board);
 }
@@ -107,8 +110,6 @@ int Board::get_neighbors(size_t row, size_t col) {
   int neighbors = 0;
   for (int vertical = bottom; vertical <= top; vertical++) {
     for (int horizontal = left; horizontal <= right; horizontal++) {
-      // FIXME: neighbors is never incremented even tho it should on index
-      // (row, col ) == (1,4)
       if (horizontal != 0 || vertical != 0) {
         if (this->board[row + vertical][col + horizontal].get_color() ==
             WHITE) {
@@ -119,4 +120,72 @@ int Board::get_neighbors(size_t row, size_t col) {
   }
 
   return neighbors;
+}
+
+void Board::setup() {
+  this->set_square_white(4, 8);
+  this->set_square_white(5, 8);
+  this->set_square_white(6, 8);
+  this->set_square_white(7, 8);
+  this->set_square_white(8, 8);
+}
+
+void Board::run(size_t n) {
+  for (size_t i = 0; i < n; i++) {
+    std::cout << (*this) << std::endl;
+    this->naive_update();
+  }
+}
+
+void Board::write_to_file(const char *filename) {
+
+  std::string file = "examples/";
+  file.append(filename);
+  file.append(".txt");
+
+  std::ofstream OutputFile(file);
+
+  std::cout << "Writing to file: " << file << std::endl;
+
+  for (size_t row = 0; row < BOARD_SIZE; row++) {
+
+    for (size_t col = 0; col < BOARD_SIZE; col++) {
+      if (this->board[row][col].get_color() == WHITE) {
+        OutputFile << '+';
+      } else {
+        OutputFile << '-';
+      }
+    }
+    OutputFile << '\n';
+  }
+
+  OutputFile.close();
+  // OutputFile << (*this);
+}
+
+void Board::read_from_file(const char *filename) {
+  std::string file = "examples/";
+  file.append(filename);
+  file.append(".txt");
+
+  std::cout << "Reading from: " << file << std::endl;
+
+  Board new_board = Board();
+
+  std::ifstream InputFile(file);
+
+  std::string line;
+  for (int row = 0; row < BOARD_SIZE; row++) {
+    getline(InputFile, line, '\n');
+    std::cout << line << std::endl;
+    for (int col = 0; col < BOARD_SIZE; col++) {
+      if (line[col] == '+') {
+        new_board.board[row][col].set_color(WHITE);
+      }
+    }
+  }
+
+  InputFile.close();
+
+  this->set_board(new_board.board);
 }

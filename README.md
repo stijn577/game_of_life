@@ -16,4 +16,10 @@ to the respective way to do so in your preferred shell. Other than that I'm plan
 ./a <filename>
 ```
 
-where the filename contains a start configuration like a glider or a blinker.
+where the filename contains a start configuration like a glider or a blinker. You could for example run
+
+```sh
+./a blinker
+```
+
+This will start the blinker program

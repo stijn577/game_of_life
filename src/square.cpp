@@ -16,6 +16,6 @@ void Square::flip_color() {
 bool Square::get_color() { return this->color; }
 
 std::ostream &operator<<(std::ostream &out, const Square &square) {
-  out << (square.color ? "+" : " ");
+  out << (square.color ? '+' : ' ');
   return out;
 }

@@ -13,8 +13,15 @@ private:
 
 public:
   Board();
-  friend std::ostream &operator<<(std::ostream &os, const Board &board);
-  void naive_update();
   void set_square_white(size_t row, size_t col);
+
+  void setup();
+  void run(size_t n);
+
   int get_neighbors(size_t row, size_t col);
+  void naive_update();
+
+  void read_from_file(const char *filename);
+  void write_to_file(const char *filename);
+  friend std::ostream &operator<<(std::ostream &os, const Board &board);
 };

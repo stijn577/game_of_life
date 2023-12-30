@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-const bool WHITE =  true;
+const bool WHITE = true;
 const bool BLACK = false;
 
 class Square {
@@ -14,9 +14,9 @@ public:
   Square(bool c);
   ~Square();
 
-  void flip_color();
   void set_color(bool color);
   bool get_color();
+  void flip_color();
 
   friend std::ostream &operator<<(std::ostream &os, const Square &dt);
 };
