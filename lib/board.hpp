@@ -1,8 +1,10 @@
+#pragma once
+
 #include "../lib/square.hpp"
 #include <ostream>
 #include <vector>
 
-const size_t BOARD_SIZE = 10;
+const size_t BOARD_SIZE = 15;
 
 class Board {
 private:
@@ -13,6 +15,6 @@ public:
   Board();
   friend std::ostream &operator<<(std::ostream &os, const Board &board);
   void naive_update();
-  void set_square_black(size_t row, size_t col);
+  void set_square_white(size_t row, size_t col);
   int get_neighbors(size_t row, size_t col);
 };

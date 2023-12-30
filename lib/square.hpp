@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+const bool WHITE =  true;
+const bool BLACK = false;
+
 class Square {
 private:
   bool color;
