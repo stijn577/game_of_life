@@ -1,7 +1,3 @@
-# directories
-build/**/*
-.vscode/**/*
+build/
+.vscode/
 
-
-# files
-a.exe
